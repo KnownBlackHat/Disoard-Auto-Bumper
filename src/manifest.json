@@ -1,0 +1,33 @@
+{
+	"{{chrome}}.manifest_version": 3,
+	"{{firefox}}.manifest_version": 2,
+	"name": "Disboard Autobump",
+	"version": "1.2.0",
+	"description": "Disboard Autobumper",
+	"icons": {
+		"16": "logo.png",
+		"48": "logo.png",
+		"128": "logo.png"
+	},
+	"{{chrome}}.action": {
+		"default_popup": "src/popup.html"
+	},
+	"{{firefox}}.browser_action": {
+		"default_popup": "src/popup.html"
+	},
+	"content_scripts": [
+		{
+			"matches": ["*://disboard.org/dashboard/servers"],
+			"js": ["src/background.js"]
+		}
+	],
+	"background": {
+		"{{chrome}}.service_worker": "src/background.js",
+		"{{firefox}}.scripts": ["src/background.js"]
+	},
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "knownblackhat@gmail.com"
+		}
+	}
+}
