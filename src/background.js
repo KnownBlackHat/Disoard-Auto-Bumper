@@ -6,18 +6,25 @@ function bump() {
 	window.location = `https://disboard.org/server/bump/${serverId}`;
 }
 
-function getAutoTime() {
+function getAutoTime(srvId) {
 	let time;
 	window.document
-		.querySelectorAll('a[href="/server/bump/1215549399602561065"] > span[data-origin-text="Bump"]')
+		.querySelectorAll(`a[href="/server/bump/${srvId}"] > span[data-origin-text="Bump"]`)
 		.forEach((v) => (time = v.textContent));
 	time = time.split(':');
 	time = time.map((v) => parseInt(v));
-	return Math.ceil(time[0] * 60 + time[1] + time[2] / 60);
+	let finalTime = Math.ceil(time[0] * 60 + time[1] + time[2] / 60);
+    window.localStorage.setItem('time', finalTime)
+    return finalTime
+}
+
+function main() {
+    const serverId = window.localStorage.getItem('ServerId');
+    timer = setTimeout(bump, getAutoTime(serverId) * 60 * 1000);
 }
 
 if (window.localStorage.getItem('status') === 'w') {
-	timer = setTimeout(bump, getAutoTime() * 60 * 1000);
+    setTimeout(main, 2000)
 }
 
 browser.runtime.onMessage.addListener((message) => {
@@ -27,7 +34,7 @@ browser.runtime.onMessage.addListener((message) => {
 		window.localStorage.setItem('ServerId', message.srvId);
 		window.localStorage.setItem('status', 'w');
 		clearTimeout(timer);
-		setTimeout(bump, getAutoTime() * 60 * 1000);
+		setTimeout(bump, getAutoTime(message.srvId) * 60 * 1000);
 	} else if (message.action === 'status') {
 		const status = window.localStorage.getItem('status');
 		const srvId = window.localStorage.getItem('ServerId');
