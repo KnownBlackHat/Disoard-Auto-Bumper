@@ -1,7 +1,6 @@
 <script>
 	import browser from 'webextension-polyfill';
 	let srvId;
-	let duration;
 
 	async function getStatus() {
 		const tabs = await browser.tabs.query({ active: true, currentWindow: true });
@@ -11,7 +10,7 @@
 
 	async function start() {
 		const tabs = await browser.tabs.query({ active: true, currentWindow: true });
-		await browser.tabs.sendMessage(tabs[0].id, { action: 'start', srvId: srvId, mins: duration });
+		await browser.tabs.sendMessage(tabs[0].id, { action: 'start', srvId: srvId});
 		window.location.reload();
 	}
 
@@ -43,16 +42,6 @@
 					required
 					bind:value={srvId}
 					class="rounded p-2 text-black"
-				/>
-				Enter Time Left:
-				<input
-					type="number"
-					required
-					bind:value={duration}
-					class="rounded p-2 text-black"
-					max="120"
-					min="1"
-					step="1"
 				/>
 			</div>
 			<div class="flex justify-center mt-4">
