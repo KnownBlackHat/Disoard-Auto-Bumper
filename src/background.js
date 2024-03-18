@@ -24,7 +24,7 @@ function main() {
 }
 
 if (window.localStorage.getItem('status') === 'w') {
-    setTimeout(main, 2000)
+    setTimeout(main, 5000)
 }
 
 browser.runtime.onMessage.addListener((message) => {
